@@ -10,6 +10,10 @@ const Body = () => {
 
   const [searchText, setSearchText] = useState("");
 
+  // const RestaurantCardPromoted = withPromotedLabel(RestaurantCard);
+
+  console.log(listOfRes);
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -41,52 +45,84 @@ const Body = () => {
   }
 
   return (
-    <div className="body">
-      <div className="filter-res">
-        <div className="search">
-          <input
-            type="text"
-            className="search-box"
-            value={searchText}
-            onChange={(e) => {
-              setSearchText(e.target.value);
-            }}
-          />
-          <button
-            onClick={() => {
-              const filteredRes = listOfRes.filter((res) =>
-                res.info.name.toLowerCase().includes(searchText.toLowerCase())
-              );
-              setFilteredRes(filteredRes);
-            }}
-          >
-            Search
-          </button>
+    <>
+      <div className="w-full mx-auto px-4 ">
+        {/* Search and filter */}
+        <div className="flex items-center justify-start gap-4">
+          <div className="px-2  ">
+            <input
+              type="text"
+              className="border border-solid rounded-md px-2"
+              value={searchText}
+              onChange={(e) => {
+                setSearchText(e.target.value);
+              }}
+            />
+            <button
+              className="border border-solid border-black rounded-md mx-2 px-2"
+              onClick={() => {
+                const filteredRes = listOfRes.filter((res) =>
+                  res.info.name.toLowerCase().includes(searchText.toLowerCase())
+                );
+                setFilteredRes(filteredRes);
+              }}
+            >
+              Search
+            </button>
+            <button
+              className="border border-solid border-black rounded-md px-1"
+              onClick={() => {
+                const filteredList = listOfRes.filter(
+                  (res) => res.info.avgRating > 4
+                );
+                setListOfRes(filteredList);
+              }}
+            >
+              Top Rated
+            </button>
+          </div>
         </div>
-
-        <button
-          className="filter-res-btn"
-          onClick={() => {
-            const filteredList = listOfRes.filter(
-              (res) => res.info.avgRating > 4
-            );
-            setListOfRes(filteredList);
-          }}
-        >
-          Top Rated
-        </button>
+        {/* Restaurant cards */}
+        <div className="grid gap-1 grid-cols-4 items-center  m-4 ">
+          {filteredRes.map((restaurants) => (
+            <Link
+              key={restaurants.info.id}
+              to={"/restaurants/" + restaurants.info.id}
+            >
+              <RestaurantCard resInfo={restaurants} />
+            </Link>
+          ))}
+        </div>
+        {/* Footer */}
+        <div>
+          <div className="grid grid-cols-3 justify-items-center bg-black text-white">
+            <div className="m-6 font-extrabold">FOOTER</div>
+            <div className="m-6">
+              <h1 className="font-medium">Company</h1>
+              <ul>
+                <li className="font-extralight">
+                  <Link to="/about">About us</Link>
+                </li>
+                <li className="font-extralight">
+                  <Link to="/grocery">Instamart</Link>
+                </li>
+                <li>xyz</li>
+                <li>xyz</li>
+                <li>xyz</li>
+              </ul>
+            </div>
+            <div className="m-6">
+              <h1 className="font-medium">Contact Us</h1>
+              <ul>
+                <li className="font-extralight">
+                  <Link to="/contact">Help & Support</Link>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
-      <div className="res-container">
-        {filteredRes.map((restaurants) => (
-          <Link
-            key={restaurants.info.id}
-            to={"/restaurants/" + restaurants.info.id}
-          >
-            <RestaurantCard resInfo={restaurants} />
-          </Link>
-        ))}
-      </div>
-    </div>
+    </>
   );
 };
 
