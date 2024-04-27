@@ -2,11 +2,16 @@ import { useState } from "react";
 import ItemList from "./ItemList";
 import { IoIosArrowDown } from "react-icons/io";
 
-const RestaurantCategory = ({ data }) => {
-  const [showItems, setShowItems] = useState(false);
-
+const RestaurantCategory = ({ data, index, showIndexes, setShowIndexes }) => {
   const handleClick = () => {
-    setShowItems(!showItems);
+    const temp = showIndexes.map((item, i) => {
+      if (i === index) {
+        return !item;
+      } else {
+        return false;
+      }
+    });
+    setShowIndexes(temp);
   };
   return (
     <>
@@ -22,7 +27,7 @@ const RestaurantCategory = ({ data }) => {
           <IoIosArrowDown />
         </span>
       </div>
-      <div>{showItems && <ItemList items={data.itemCards} />}</div>
+      <div>{showIndexes[index] && <ItemList items={data.itemCards} />}</div>
     </>
   );
 };

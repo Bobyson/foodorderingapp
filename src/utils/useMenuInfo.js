@@ -15,7 +15,15 @@ const useMenuInfo = (resId) => {
     setMenuInfo(json.data);
   };
 
-  return menuInfo;
+  return {
+    menuInfo: menuInfo,
+    noOfCategories:
+      menuInfo?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards.filter(
+        (c) =>
+          c.card?.card?.["@type"] ===
+          "type.googleapis.com/swiggy.presentation.food.v2.ItemCategory"
+      ).length,
+  };
 };
 
 export default useMenuInfo;
